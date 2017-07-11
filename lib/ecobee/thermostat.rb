@@ -185,7 +185,7 @@ module Ecobee
       hold_type: 'nextTransition'
     )
       params = { 
-        'holdType' => 'nextTransition',
+        'holdType' => hold_type,
         'coolHoldTemp' => un_unitize(cool_hold_temp),
         'heatHoldTemp' => un_unitize(heat_hold_temp)
       }
