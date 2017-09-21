@@ -1,8 +1,8 @@
 module Ecobee
 
   class Token
-    attr_reader :access_token, 
-                :access_token_expire, 
+    attr_reader :access_token,
+                :access_token_expire,
                 :app_key,
                 :callbacks,
                 :http,
@@ -58,7 +58,7 @@ module Ecobee
            refresh_access_token_wrapper
          else
            @http.log "access_token: token_register"
-           token_register 
+           token_register
          end
        else
          desired_status = (@refresh_token ? :ready : :authorization_pending)
@@ -76,7 +76,7 @@ module Ecobee
        end
      else
        @status = :authorization_pending
-       token_register 
+       token_register
      end
     end
 
@@ -136,7 +136,7 @@ module Ecobee
                                     result['error_description']])
       else
         result_load_to_memory result
-      end 
+      end
     end
 
     def refresh_access_token_wrapper
@@ -204,7 +204,7 @@ module Ecobee
       if result.key? 'error'
         @status = :authorization_pending
         if result['error'] == 'invalid_client'
-          token_register 
+          token_register
         elsif ['slow_down', 'authorization_pending'].include? result['error']
           nil
         else
@@ -237,12 +237,12 @@ module Ecobee
       if !@access_token
         @access_token = config['access_token']
         @access_token_expire = config['access_token_expire'].to_i
-      elsif(config.key?('access_token') && 
+      elsif(config.key?('access_token') &&
             config['access_token_expire'].to_i > @access_token_expire)
         @access_token = config['access_token']
         @access_token_expire = config['access_token_expire'].to_i
         if config['refresh_token']
-          @refresh_token = config['refresh_token'] 
+          @refresh_token = config['refresh_token']
           @scope = config['scope']
           @token_type = config['token_type']
         elsif config.key?('pin')
@@ -291,7 +291,7 @@ module Ecobee
       config['access_token'] = @access_token
       config['access_token_expire'] = @access_token_expire
       if @refresh_token
-        config['refresh_token'] = @refresh_token 
+        config['refresh_token'] = @refresh_token
         config['scope'] = @scope
         config['token_type'] = @token_type
       elsif @pin
