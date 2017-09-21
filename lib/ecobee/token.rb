@@ -144,7 +144,7 @@ module Ecobee
       retries.times do |attempt|
         begin
           refresh_access_token(retries: retries - attempt)
-        rescue Ecobee::RetryAuthError.new
+        rescue Ecobee::RetryAuthError
           sleep 10
         end
       end
