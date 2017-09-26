@@ -22,7 +22,7 @@ module Ecobee
 
   CONTENT_TYPE = ['application/json', { 'charset' => 'UTF-8' }]
 
-  DEFAULT_POLL_INTERVAL = 30 
+  DEFAULT_POLL_INTERVAL = 30
 
   DEFAULT_FILES = [
     '~/Library/Mobile Documents/com~apple~CloudDocs/.ecobee_token',
@@ -31,9 +31,9 @@ module Ecobee
 
   AUTH_ERRORS = %w{
     authorization_expired
-    authorization_pending 
-    invalid_client 
-    slow_down 
+    authorization_pending
+    invalid_client
+    slow_down
   }
 
   FAN_MODES = %w{auto on}
@@ -76,7 +76,7 @@ module Ecobee
 
   def self.ResponseCode(code)
     {  0 => 'Success',
-       1 => 'Authentication failed.', 
+       1 => 'Authentication failed.',
        2 => 'Not authorized.',
        3 => 'Processing error.',
        4 => 'Serialization error.',
