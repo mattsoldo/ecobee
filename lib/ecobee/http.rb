@@ -118,23 +118,34 @@ class HTTPError < StandardError ; end
       return unless log_file
       log_file = File.expand_path log_file
       @log_fh = File.new(log_file, 'a')
-    rescue Exception => msg 
+    rescue Exception => msg
       raise Ecobee::HTTPError.new("open_log: #{msg}")
     end
 
     def validate_status(response)
       if !response.key? 'status'
         raise Ecobee::HTTPError.new('Validate Error: Missing Status')
+        {
+          message: 'Validate Error: Missing Status',
+          status: nil
+        }.to_json
       elsif !response['status'].key? 'code'
-        raise Ecobee::HTTPError.new('Validate Error: Missing Status Code')
+        raise Ecobee::HTTPError.new(
+          {
+            message: 'Validate Error: Missing Status Code',
+            status: nil
+          }.to_json
+        )
       elsif response['status']['code'] == 14
         log "validate_status: token expired access_token_expire: #{@token.access_token_expire}"
         log "validate_status:                               now: #{Time.now.to_i}"
         :retry
       elsif response['status']['code'] != 0
         raise Ecobee::HTTPError.new(
-          "Validate Error: (Code #{response['status']['code']}) " +
-          "#{response['status']['message']}"
+          {
+            message: "Validate Error: (Code #{response['status']['code']}) " + "#{response['status']['message']}",
+            status: response['status']['code']
+          }.to_json
         )
       else
         response
