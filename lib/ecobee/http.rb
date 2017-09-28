@@ -38,14 +38,23 @@ class HTTPError < StandardError ; end
       end
       case response
       when :retry
-        raise Ecobee::HTTPError.new('HTTP.get: retries exhausted')
+        raise Ecobee::HTTPError, {
+          message: 'HTTP.get: retries exhausted',
+          status: nil
+        }.to_json
       else
         response
       end
     rescue SocketError => msg
-      raise Ecobee::HTTPError.new("HTTP.get SocketError => #{msg}")
+      raise Ecobee::HTTPError, {
+        message: "HTTP.get SocketError => #{msg}",
+        status: nil
+      }.to_json
     rescue JSON::ParserError => msg
-      raise Ecobee::HTTPError.new("HTTP.get JSON::ParserError => #{msg}")
+      raise Ecobee::HTTPError, {
+        message: "HTTP.get JSON::ParserError => #{msg}",
+        status: nil
+      }.to_json
     end
 
     def log(arg)
@@ -91,14 +100,23 @@ class HTTPError < StandardError ; end
       end
       case response
       when :retry
-        raise Ecobee::HTTPError.new('HTTP.get: retries exhausted')
+        raise Ecobee::HTTPError, {
+          message: 'HTTP.post: retries exhausted',
+          status: nil
+        }.to_json
       else
         response
       end
     rescue SocketError => msg
-      raise Ecobee::HTTPError.new("HTTP.get SocketError => #{msg}")
+      raise Ecobee::HTTPError, {
+        message: "HTTP.post SocketError => #{msg}",
+        status: nil
+      }.to_json
     rescue JSON::ParserError => msg
-      raise Ecobee::HTTPError.new("HTTP.get JSON::ParserError => #{msg}")
+      raise Ecobee::HTTPError, {
+        message: "HTTP.post JSON::ParserError => #{msg}",
+        status: nil
+      }.to_json
     end
 
     private
@@ -111,7 +129,10 @@ class HTTPError < StandardError ; end
       end
       @http
     rescue SocketError => msg
-      raise Ecobee::HTTPError.new("HTTP.http SocketError => #{msg}")
+      raise Ecobee::HTTPError, {
+        message: "HTTP.http SocketError => #{msg}",
+        status: nil
+      }.to_json
     end
 
     def open_log(log_file)
@@ -119,34 +140,32 @@ class HTTPError < StandardError ; end
       log_file = File.expand_path log_file
       @log_fh = File.new(log_file, 'a')
     rescue Exception => msg
-      raise Ecobee::HTTPError.new("open_log: #{msg}")
+      raise Ecobee::HTTPError, {
+        message: "open_log: #{msg}",
+        status: nil
+      }.to_json
     end
 
     def validate_status(response)
       if !response.key? 'status'
-        raise Ecobee::HTTPError.new('Validate Error: Missing Status')
-        {
+        raise Ecobee::HTTPError, {
           message: 'Validate Error: Missing Status',
           status: nil
         }.to_json
       elsif !response['status'].key? 'code'
-        raise Ecobee::HTTPError.new(
-          {
-            message: 'Validate Error: Missing Status Code',
-            status: nil
-          }.to_json
-        )
+        raise Ecobee::HTTPError, {
+          message: 'Validate Error: Missing Status Code',
+          status: nil
+        }.to_json
       elsif response['status']['code'] == 14
         log "validate_status: token expired access_token_expire: #{@token.access_token_expire}"
         log "validate_status:                               now: #{Time.now.to_i}"
         :retry
       elsif response['status']['code'] != 0
-        raise Ecobee::HTTPError.new(
-          {
-            message: "Validate Error: (Code #{response['status']['code']}) " + "#{response['status']['message']}",
-            status: response['status']['code']
-          }.to_json
-        )
+        raise Ecobee::HTTPError, {
+          message: "Validate Error: (Code #{response['status']['code']}) " + "#{response['status']['message']}",
+          status: response['status']['code']
+        }.to_json
       else
         response
       end
