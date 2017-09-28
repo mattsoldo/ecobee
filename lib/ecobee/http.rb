@@ -5,7 +5,7 @@ class HTTPError < StandardError ; end
   class HTTP
 
     def initialize(log_file: nil, token: nil)
-      raise ArgumentError.new('Missing token') unless token
+      raise ArgumentError, 'Missing token' unless token
       @token = token
       open_log log_file
       http
