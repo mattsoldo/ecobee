@@ -172,10 +172,7 @@ module Ecobee
       if @index + 1 > response['thermostatList'].length
         raise ThermostatError.new('No such thermostat')
       end
-      # @max_index = response['thermostatList'].length - 1
-      list = response['thermostatList']
-
-      # self.replace list.merge(to_sym(list))
+      response['thermostatList']
     end
 
     def set_hold(
