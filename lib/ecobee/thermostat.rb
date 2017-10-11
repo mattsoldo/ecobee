@@ -53,7 +53,7 @@ module Ecobee
       ack_ref: nil,
       ack_type: 'accept'
     )
-      params = { 
+      params = {
         'ackRef' => ack_ref,
         'ackType' => ack_type,
         'thermostatIdentifier' => self[:identifier]
@@ -151,7 +151,7 @@ module Ecobee
     end
 
     def my_selection
-      { 
+      {
         'selection' => {
           'selectionType' => 'thermostats',
           'selectionMatch' => self[:identifier]
@@ -172,11 +172,11 @@ module Ecobee
       if @index + 1 > response['thermostatList'].length
         raise ThermostatError.new('No such thermostat')
       end
-      @max_index = response['thermostatList'].length - 1
-      list = response['thermostatList'][@index]
- 
-      self.replace list.merge(to_sym(list))
-    end 
+      # @max_index = response['thermostatList'].length - 1
+      list = response['thermostatList']
+
+      # self.replace list.merge(to_sym(list))
+    end
 
     def set_hold(
       cool_hold_temp: unitize(self[:runtime][:desiredCool]),
@@ -184,7 +184,7 @@ module Ecobee
       heat_hold_temp: unitize(self[:runtime][:desiredHeat]),
       hold_type: 'nextTransition'
     )
-      params = { 
+      params = {
         'holdType' => hold_type,
         'coolHoldTemp' => un_unitize(cool_hold_temp),
         'heatHoldTemp' => un_unitize(heat_hold_temp)
@@ -234,7 +234,7 @@ module Ecobee
       end
     end
 
-    # converts Ecobee farenheit * 10 integer input, returns 
+    # converts Ecobee farenheit * 10 integer input, returns
     #  farenheit or celsius output rounded to nearest .5
     def unitize(value)
       if celsius?
