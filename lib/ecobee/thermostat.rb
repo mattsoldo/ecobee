@@ -33,12 +33,14 @@ module Ecobee
       fake_max_index: 0,
       selection: nil,
       selection_args: {},
-      token: nil
+      token: nil,
+      xref_id: nil
     )
       # TODO: add auto-refresh thread handling
       @auto_refresh = auto_refresh
 
       raise ArgumentError.new('No token: specified') unless token
+      raise ArgumentError.new('No xref_id: specified') unless xref_id
       @http = token.http
       @fake_index = fake_index
       @fake_max_index = fake_max_index
@@ -46,7 +48,7 @@ module Ecobee
       @selection ||= Ecobee::Selection(
         DEFAULT_SELECTION_ARGS.merge(selection_args)
       )
-      refresh
+      refresh(xref_id)
     end
 
     def acknowledge(
@@ -167,12 +169,14 @@ module Ecobee
       end
     end
 
-    def refresh
+    def refresh(xref_id)
       response = @http.get(arg: :thermostat, options: @selection)
       if @index + 1 > response['thermostatList'].length
         raise ThermostatError.new('No such thermostat')
       end
-      response['thermostatList']
+        @max_index = response['thermostatList'].length - 1
+        list = response['thermostatList'].find { |thermostat| thermostat['identifier'] == xref_id }
+        self.replace list.merge(to_sym(list))
     end
 
     def set_hold(
