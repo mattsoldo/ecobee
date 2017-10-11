@@ -10,11 +10,7 @@ require_relative 'ecobee/version'
 
 module Ecobee
 
-  class HTTPError < StandardError;
-    def initialize(message, status)
-      @message = message
-      @status = status
-  end
+  class HTTPError < StandardError; end
 
   class AuthError < HTTPError ; end
 
