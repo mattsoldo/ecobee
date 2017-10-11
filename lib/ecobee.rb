@@ -10,7 +10,7 @@ require_relative 'ecobee/version'
 
 module Ecobee
 
-  class HTTPError < StandardError ; end
+  class HTTPError < StandardError; end
 
   class AuthError < HTTPError ; end
 
