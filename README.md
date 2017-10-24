@@ -32,7 +32,8 @@ gem install ecobee
   - Give user Ecobee::Token#pin and instructions to register your Application via the [Ecobee My Apps Portal](https://www.ecobee.com/consumerportal/index.html#/my-apps).
   - You can call Ecobee::Token#wait to block until the user confirms the PIN code.
 
-3. Instantiate Ecobee::Thermostat with the token object and the device's xref_id `Ecobee::Thermostat.new(token: token, xref_id: xref_id)`
+3. Instantiate Ecobee::Thermostat with the token object and the device's xref_id
+  - `Ecobee::Thermostat.new(token: token, xref_id: xref_id)`
 
 4. Use the simplified methods for common interactions, access the Thermostat object directly as a Hash to read values, or use the update method to post changes.
 
