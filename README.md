@@ -1,6 +1,6 @@
 # Ecobee
 
-Ecobee API Ruby Gem.  Implements: 
+Ecobee API Ruby Gem.  Implements:
 - OAuth PIN-based token registration & renewal
 - Persistent HTTP connection management
 - Methods for GET & POST requests w/ JSON parsing & error handling
@@ -32,7 +32,8 @@ gem install ecobee
   - Give user Ecobee::Token#pin and instructions to register your Application via the [Ecobee My Apps Portal](https://www.ecobee.com/consumerportal/index.html#/my-apps).
   - You can call Ecobee::Token#wait to block until the user confirms the PIN code.
 
-3. Instantiate Ecobee::Thermostat with the token object.
+3. Instantiate Ecobee::Thermostat with the token object and the device's xref_id
+  - `Ecobee::Thermostat.new(token: token, xref_id: xref_id)`
 
 4. Use the simplified methods for common interactions, access the Thermostat object directly as a Hash to read values, or use the update method to post changes.
 
@@ -51,4 +52,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/robzr/
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
