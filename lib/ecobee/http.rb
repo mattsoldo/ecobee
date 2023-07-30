@@ -19,7 +19,7 @@ class HTTPError < StandardError ; end
       options: nil,
       validate_status: true
     )
-      uri = URI.escape(sprintf("#{Ecobee::API_URI_BASE}/%s%s%s",
+      uri = Addressable::URI.parse(sprintf("#{Ecobee::API_URI_BASE}/%s%s%s",
                                resource_prefix,
                                arg.to_s.sub(/^\//, ''),
                                options ? "?json=#{options.to_json}" : ''))
@@ -75,7 +75,7 @@ class HTTPError < StandardError ; end
       options: {},
       validate_status: true
     )
-      uri = URI.escape(sprintf("#{Ecobee::API_URI_BASE}/%s%s%s",
+      uri = Addressable::URI.parse(sprintf("#{Ecobee::API_URI_BASE}/%s%s%s",
                                resource_prefix,
                                arg.to_s.sub(/^\//, ''),
                                options.length > 0 ? "?json=#{options.to_json}" : ''))
